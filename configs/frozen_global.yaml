@@ -1,0 +1,26 @@
+# FROZEN global configuration (2026-07-18) — used unchanged for every
+# experiment in the paper. See protocols/preregistration.md.
+k: 12
+n_dirs: 8
+grid_size: 12
+lam_n: 12.5
+anchor: 1000.0
+anchor_mode: const
+cap_sigma: 2.0
+prop_decay: 0.75
+normal_thresh: 0.7
+n_outer: 1
+cg_tol: 1.0e-6
+internal_constants:
+  tau: 1.5
+  shrinkage: {a: 0.77, b: 0.38, floor: 0.40}
+  buffer_rounds: 2
+  cap_exponent: 3
+  weight_exponent: 2
+  flat_half_quantile: 0.5
+outlier_task:
+  threshold_sigma: 4.0     # <=1e-4 per-inlier false-rejection budget
+seeds:
+  development: 42
+  validation: 7
+  final_test: [7, 19, 101]

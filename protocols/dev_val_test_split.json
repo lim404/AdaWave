@@ -1,0 +1,105 @@
+{
+ "development": {
+  "vaihingen": [
+   "V1-Center",
+   "V2-Southwest",
+   "V3-Southeast",
+   "V4-North"
+  ],
+  "dales": [
+   "D1-Urban",
+   "D2-Suburban",
+   "D3-Mixed",
+   "D4-Test"
+  ],
+  "modelnet": [
+   "airplane",
+   "chair",
+   "car",
+   "table",
+   "guitar",
+   "cone",
+   "bottle",
+   "piano"
+  ],
+  "seed": 42
+ },
+ "validation": {
+  "vaihingen_crops": [
+   [
+    "VV1",
+    496984,
+    5419394,
+    15,
+    "validation; ground 0.51 / bldg 0.46"
+   ],
+   [
+    "VV2",
+    497144,
+    5419394,
+    15,
+    "validation; ground 0.45 / bldg 0.45"
+   ]
+  ],
+  "dales_tiles": [
+   [
+    "DV1",
+    "train/5110_54460_new.ply"
+   ],
+   [
+    "DV2",
+    "train/5145_54405_new.ply"
+   ]
+  ],
+  "modelnet": [
+   "sofa",
+   "lamp",
+   "toilet",
+   "monitor"
+  ],
+  "seed": 7
+ },
+ "final_test": {
+  "vaihingen_source": "/mnt/a/data/Vaihingen/3DLabeling/Vaihingen3D_EVAL_WITH_REF.pts.gz",
+  "vaihingen_n_windows": 4,
+  "dales_tiles": [
+   [
+    "DT1",
+    "test/5100_54440_new.ply"
+   ],
+   [
+    "DT2",
+    "test/5120_54445_new.ply"
+   ],
+   [
+    "DT3",
+    "test/5135_54430_new.ply"
+   ],
+   [
+    "DT4",
+    "test/5150_54325_new.ply"
+   ]
+  ],
+  "modelnet": [
+   "bed",
+   "desk",
+   "dresser",
+   "vase",
+   "sink",
+   "stairs",
+   "laptop",
+   "bench"
+  ],
+  "seeds": [
+   7,
+   19,
+   101
+  ],
+  "noise_levels_m": [
+   0.02,
+   0.05,
+   0.1
+  ],
+  "modelnet_noise_frac": 0.015
+ }
+}
