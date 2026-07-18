@@ -264,7 +264,11 @@ def denoise_wavefront_prior_v2(X_noisy: np.ndarray,
             # proportion to the descriptor strength, otherwise the factor
             # falls back to the isotropic (1-ex_p)^2 decay.
             diffn = X_cur[indices] - X_cur[:, None, :]
-            diffn = diffn / (np.linalg.norm(diffn, axis=-1, keepdims=True) + 1e-12)
+            # scale-adaptive guard (units of length): keeps the chord
+            # normalisation exactly equivariant under coordinate rescaling;
+            # active only for numerically coincident points
+            eps_u = 1e-12 * ns["ell_g"]
+            diffn = diffn / (np.linalg.norm(diffn, axis=-1, keepdims=True) + eps_u)
             rel = desc["strength"]
             along_i = (diffn * p_vec[:, None, :]).sum(-1)
             fac_i = (1.0 - ex_p[:, None]
