@@ -171,7 +171,7 @@ def _load_vaihingen():
     global _vaihingen_cache
     if _vaihingen_cache is None:
         print("  Loading Vaihingen Training...")
-        data = np.loadtxt(VAIHINGEN_PATH)
+        data = np.loadtxt(paths.require(VAIHINGEN_PATH, "Vaihingen training tile"))
         _vaihingen_cache = (data[:, :3], data[:, 6].astype(int))
         print(f"    {len(data)} points loaded")
     return _vaihingen_cache
@@ -268,7 +268,7 @@ def _load_dales(rel_path):
     if rel_path in _dales_cache:
         return _dales_cache[rel_path]
     from plyfile import PlyData
-    full_path = os.path.join(DALES_ROOT, rel_path)
+    full_path = paths.require(os.path.join(DALES_ROOT, rel_path), f"DALES tile {rel_path}")
     print(f"  Loading {rel_path}...")
     ply = PlyData.read(full_path)
     v = ply.elements[0]

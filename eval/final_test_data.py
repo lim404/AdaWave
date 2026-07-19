@@ -23,6 +23,7 @@ def _load_vai_eval():
     global _vai_cache
     if _vai_cache is None:
         print("  Loading Vaihingen EVAL_WITH_REF...", flush=True)
+        paths.require(TEST_VAIHINGEN_SOURCE, "Vaihingen EVAL_WITH_REF (final test)")
         with gzip.open(TEST_VAIHINGEN_SOURCE, "rt") as f:
             data = np.loadtxt(f)
         _vai_cache = (data[:, :3], data[:, 6].astype(int))
@@ -99,8 +100,12 @@ def mn_samples():
     import glob
     import trimesh
     for cat in TEST_MODELNET:
-        f = sorted(glob.glob(str(paths.modelnet40_root() / cat / "test" / "*.off")))[0]
-        mesh = trimesh.load(f)
+        cat_dir = paths.require(paths.modelnet40_root() / cat / "test",
+                                f"ModelNet40 category '{cat}'")
+        matches = sorted(glob.glob(str(cat_dir / "*.off")))
+        if not matches:
+            raise FileNotFoundError(f"No .off meshes under {cat_dir}")
+        mesh = trimesh.load(matches[0])
         for seed in TEST_SEEDS:
             rng = np.random.default_rng(seed)
             # seed also controls surface sampling for full independence
