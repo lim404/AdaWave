@@ -1,16 +1,51 @@
-8c4a996f1c99d91577bd1303449afca10c8698f8
+475b19ef798681501fcae63c51b8486b06fe0e1b   (tag: v1.0-tpami)
 
-FREEZE COMMIT — the state of adawave/ at the moment the method was frozen
+FREEZE COMMIT — the state of the method at the moment it was frozen
 (FREEZE_v2.md, 2026-07-18), before the validation and final-test runs.
+All reported numbers were produced by the method as of this commit.
 
-Later commits do not change the method. They add the evaluation harness
-(eval/), packaging, and documentation. The one exception is a numerical
-guard in commit 71cf5d0, which replaced a fixed 1e-12 epsilon in the chord
-normalisation with a scale-adaptive 1e-12 * ell_g. It is active only for
-numerically coincident points and makes the weight computation exactly
-equivariant under coordinate rescaling; all 5 certificate tests pass before
-and after.
+Prefer the tag `v1.0-tpami` over the raw hash: the hash above is the one
+published here, and differs from the hash recorded in the internal research
+repository because author metadata was rewritten before public release. The
+tree contents are identical; only commit metadata changed.
 
-To audit the method surface yourself:
+THE FROZEN METHOD SURFACE is the import closure of `adawave.restore`:
 
-    git diff 8c4a996 HEAD -- adawave/
+    restoration.py  neighbors.py  geometry.py
+    patch.py        directional.py  descriptors.py
+
+To audit that it did not change, diff exactly those files:
+
+    git diff v1.0-tpami HEAD -- \
+        adawave/restoration.py adawave/neighbors.py adawave/geometry.py \
+        adawave/patch.py adawave/directional.py adawave/descriptors.py
+
+The only hit is a numerical guard in commit 3c10a23 (tag:
+v1.2-tpami-locked): a fixed 1e-12 epsilon in the chord normalisation became
+a scale-adaptive 1e-12 * ell_g. It is active only for numerically
+coincident points and makes the weight computation exactly equivariant
+under coordinate rescaling; all 5 certificate tests pass before and after.
+
+NOTE: `git diff v1.0-tpami HEAD -- adawave/` (the whole package) shows more
+than that, because the public release added five modules to the package for
+the evaluation harness:
+
+    baselines.py       classical comparators (MLS, WLOP, GLR, Jet, CLOP)
+    wavefront_prior.py the v1 comparator, reported as an ablation
+    denoise.py         iterative smoothing used by harness baselines
+    preprocess.py      dedup / outlier removal shared across methods
+    propagate.py       v1 propagation, used by the v1 comparator
+
+None of these is reachable from `adawave.restore`; they exist so that the
+baselines the paper compares against are runnable from this repository.
+Verify that independently:
+
+    python -c "import ast,os;s,q=set(),['restoration']
+    while q:
+     m=q.pop()
+     if m in s: continue
+     s.add(m)
+     p=f'adawave/{m}.py'
+     q += [n.module for n in ast.walk(ast.parse(open(p).read()))
+           if isinstance(n,ast.ImportFrom) and n.level==1 and n.module] if os.path.exists(p) else []
+    print(sorted(s))"
