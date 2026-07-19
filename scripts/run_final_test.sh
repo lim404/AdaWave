@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
-# See ../README.md: entry points live in the research repository; this
-# release pins the package, protocol, seeds, and raw outputs. Command:
-echo "python final_test.py && python final_test_dl.py {score,pfn,pathnet,straightpcf}"
+# Final-test run (Table I + Table II). Classical methods and AdaWave only:
+# the learned baselines need third-party checkpoints that are not
+# redistributed here -- see README.md "Not included in this repository".
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+: "${ADAWAVE_DATA_ROOT:?set it to the directory holding the datasets (see README.md)}"
+
+python eval/final_test.py "$@"

@@ -1,1 +1,16 @@
 8c4a996f1c99d91577bd1303449afca10c8698f8
+
+FREEZE COMMIT — the state of adawave/ at the moment the method was frozen
+(FREEZE_v2.md, 2026-07-18), before the validation and final-test runs.
+
+Later commits do not change the method. They add the evaluation harness
+(eval/), packaging, and documentation. The one exception is a numerical
+guard in commit 71cf5d0, which replaced a fixed 1e-12 epsilon in the chord
+normalisation with a scale-adaptive 1e-12 * ell_g. It is active only for
+numerically coincident points and makes the weight computation exactly
+equivariant under coordinate rescaling; all 5 certificate tests pass before
+and after.
+
+To audit the method surface yourself:
+
+    git diff 8c4a996 HEAD -- adawave/
